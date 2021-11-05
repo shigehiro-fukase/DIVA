@@ -3,6 +3,24 @@ get_filename_component(CMAKE_MODULE_PATH "CMake" ABSOLUTE)
 
 project(DIVA)
 
+include(Utilities)
+include(CompilerFlags)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
+# set the runtime path for linux to be the origin of the executable.
+set(CMAKE_INSTALL_RPATH "$ORIGIN/../Libraries:$ORIGIN/")
+
+if(NOT deploy_dir)
+    set(deploy_dir "${CMAKE_BINARY_DIR}/Deploy")
+endif()
+
+add_subdirectory(ExternalDependencies/dicheck)
+add_subdirectory(ExternalDependencies/LibRegex)
+add_subdirectory(ExternalDependencies/LibTsearch)
+add_subdirectory(ExternalDependencies/LibZlib)
+add_subdirectory(ExternalDependencies/LibElf)
+add_subdirectory(ExternalDependencies/LibDwarf)
+
 set(gtest_force_shared_crt ON CACHE BOOL
     "Use shared (DLL) run-time lib even when Google Test is built as static lib.")
 add_subdirectory(ExternalDependencies/googletest)
@@ -16,11 +34,6 @@ option(CODE_COVERAGE "Enable code coverage" OFF)
 option(CLANG_ASAN "Enable clang address sanitizer" OFF)
 option(CLANG_MEMSAN "Enable clang memory sanitizer" OFF)
 option(CLANG_UBSAN "Enable clang undefined behaviour sanitizer" OFF)
-
-include(Utilities)
-include(CompilerFlags)
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
 
 set(CMAKE_CXX_STANDARD "14")
 set(CMAKE_CXX_STANDARD_REQUIRED "ON")
