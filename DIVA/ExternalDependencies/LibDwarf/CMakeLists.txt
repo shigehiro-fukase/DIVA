@@ -222,9 +222,9 @@ install(
 )
 
 # Create custom install target for the dwarf_dump_deploy component
-add_custom_target(DEPLOY
-    DEPENDS LibDwarf
-    COMMAND
-        "${CMAKE_COMMAND}" -DCMAKE_INSTALL_COMPONENT=dwarf_dump_deploy
-        "-DBUILD_TYPE=$<CONFIG>" -P "${CMAKE_BINARY_DIR}/cmake_install.cmake"
-)
+#add_custom_target(DEPLOY
+#    DEPENDS LibDwarf
+#    COMMAND
+#        "${CMAKE_COMMAND}" -DCMAKE_INSTALL_COMPONENT=dwarf_dump_deploy
+#        "-DBUILD_TYPE=$<CONFIG>" -P "${CMAKE_BINARY_DIR}/cmake_install.cmake"
+#)
