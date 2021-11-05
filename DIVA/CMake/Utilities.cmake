@@ -75,6 +75,43 @@ function(copy_files_post_build target from_dir to_dir)
     add_custom_command(TARGET "${target}" POST_BUILD ${commands})
 endfunction()
 
+# create_code_generator(<name>
+#                       GENERATE <out1> [<out2> ...]
+#                       COMMANDS <command1> [<command2> ...]
+#                       [DEPENDS [<dependency1> ...]]
+# )
+# The commands should follow the rules for add_custom_command, including being
+# prefixed by COMMAND
+function(create_code_generator generator_name)
+    # Parse Args
+    set(arg_sections "GENERATE" "COMMANDS" "DEPENDS")
+    parse_all_arguments("ARG" "" "" "${arg_sections}" ${ARGN})
+    if(NOT ARG_GENERATE)
+        message(FATAL_ERROR "No GENERATE files passed to create_code_generator")
+    elseif(NOT ARG_COMMANDS)
+        message(FATAL_ERROR "No COMMANDS passed to create_code_generator")
+    endif()
+    # Get full paths
+    set(full_generate_paths "")
+    foreach(path ${ARG_GENERATE})
+        list(APPEND full_generate_paths "${CMAKE_CURRENT_SOURCE_DIR}/${path}")
+    endforeach()
+    # Add the custom step
+    add_custom_command(
+        OUTPUT ${full_generate_paths}
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+        ${ARG_COMMANDS}
+        DEPENDS ${ARG_DEPENDS}
+    )
+    add_custom_target(
+        ${generator_name}
+        DEPENDS ${full_generate_paths}
+    )
+    set_target_properties(${generator_name} PROPERTIES FOLDER Generate)
+    # Set the files as generated
+    set_source_files_properties(${ARG_GENERATE} PROPERTIES GENERATED TRUE)
+endfunction()
+
 # copy_dir_post_build_config_aware <target> <config> <from_dir> <to_dir>
 # Only does the copy if the current configuration matches config
 function(copy_dir_post_build_config_aware target config from_dir to_dir)
