@@ -4084,6 +4084,11 @@ int dwarf_pro_get_string_stats(Dwarf_P_Debug /*dbg*/,
     Dwarf_Unsigned * /*reused_len*/,
     Dwarf_Error    * /*error*/);
 
+int dwarf_dbg_address(Dwarf_Debug dbg,
+	Dwarf_Off * ret_offset, Dwarf_Error * error);
+int dwarf_die_address(Dwarf_Die die,
+	Dwarf_Off * ret_offset, Dwarf_Error * error);
+
 #ifdef __cplusplus
 }
 #endif

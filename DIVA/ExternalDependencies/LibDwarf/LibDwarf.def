@@ -384,3 +384,7 @@ EXPORTS
   dwarf_discr_entry_u
 
 
+  ; 2021.11.07
+  dwarf_dbg_address
+  dwarf_die_address
+

@@ -1788,6 +1788,104 @@ _dwarf_calculate_abbrev_section_end_ptr(Dwarf_CU_Context context)
     return abbrev_end;
 }
 
+Dwarf_Byte_Ptr
+_dwarf_sec_end_ptr(struct Dwarf_Section_s * sec)
+{
+    Dwarf_Byte_Ptr dss_start = 0, dss_end = 0;
 
+    dss_start = sec->dss_data;
+    dss_end = dss_start + sec->dss_size;
+    return dss_end;
+}
 
+int
+dwarf_sec_print(struct Dwarf_Section_s * sec,
+    Dwarf_Off * ret_offset, Dwarf_Error * error)
+{
+    Dwarf_Byte_Ptr dss_start = 0, dss_end = 0;
 
+    dss_start = sec->dss_data;
+    dss_end = _dwarf_sec_end_ptr(sec);
+
+    printf("DSS = %p - %p\n", dss_start, dss_end);
+    printf("DSS Entrysize = 0x%llX\n", sec->dss_entrysize);
+    printf("DSS Index = 0x%X\n", sec->dss_index);
+    printf("DSS Addr = 0x%llX\n", sec->dss_addr);
+    printf("DSS data was malloc = %d\n", sec->dss_data_was_malloc);
+    printf("DSS is in use = %d\n", sec->dss_is_in_use);
+    printf("DSS requires decompress = %d\n", sec->dss_requires_decompress);
+
+#if 0
+    /*  For non-elf, leaving the following fields zero
+        will mean they are ignored. */
+    /*  dss_link should be zero unless a section has a link
+        to another (sh_link).  Used to access relocation data for
+        a section (and for symtab section, access its strtab). */
+    Dwarf_Word     dss_link;
+    /*  The following is used when reading .rela sections
+        (such sections appear in some .o files). */
+    Dwarf_Half     dss_reloc_index; /* Zero means ignore the reloc fields. */
+    Dwarf_Small *  dss_reloc_data;
+    Dwarf_Unsigned dss_reloc_size;
+    Dwarf_Unsigned dss_reloc_entrysize;
+    Dwarf_Addr     dss_reloc_addr;
+    /*  dss_reloc_symtab is the sh_link of a .rela to its .symtab, leave
+        it 0 if non-meaningful. */
+    Dwarf_Addr     dss_reloc_symtab;
+    /*  dss_reloc_link should be zero unless a reloc section has a link
+        to another (sh_link).  Used to access the symtab for relocations
+        a section. */
+    Dwarf_Word     dss_reloc_link;
+    /*  Pointer to the elf symtab, used for elf .rela. Leave it 0
+        if not relevant. */
+    struct Dwarf_Section_s *dss_symtab;
+    /*  dss_name must never be freed, it is a quoted string
+        in libdwarf. */
+    const char * dss_name;
+
+    /* Object section number in object file. */
+    unsigned dss_number;
+
+    /*  These are elf flags and non-elf object should
+        just leave these fields zero. Which is essentially
+        automatic as they are not in
+        Dwarf_Obj_Access_Section_s.  */
+    Dwarf_Word  dss_flags;
+    Dwarf_Word  dss_addralign;
+#endif
+	return DW_DLV_OK;
+}
+
+int
+dwarf_dbg_address(Dwarf_Debug dbg,
+    Dwarf_Off * ret_offset, Dwarf_Error * error)
+{
+    int ret;
+
+    printf("------------------\n");
+    printf("debug_line\n");
+    ret = dwarf_sec_print(&dbg->de_debug_line, ret_offset, error);
+    printf("debug_loc\n");
+    ret = dwarf_sec_print(&dbg->de_debug_loc, ret_offset, error);
+    printf("debug_arranges\n");
+    ret = dwarf_sec_print(&dbg->de_debug_aranges, ret_offset, error);
+
+    return DW_DLV_OK;
+}
+int
+dwarf_die_address(Dwarf_Die die,
+    Dwarf_Off * ret_offset, Dwarf_Error * error)
+{
+    Dwarf_CU_Context cu_context = 0;
+    Dwarf_Small *dataptr = 0;
+    Dwarf_Debug dbg = 0;
+
+    CHECK_DIE(die, DW_DLV_ERROR);
+    cu_context = die->di_cu_context;
+    dbg = die->di_cu_context->cc_dbg;
+    dataptr = die->di_is_info? dbg->de_debug_info.dss_data:
+        dbg->de_debug_types.dss_data;
+    printf("DATAPTR = %p\n", dataptr);
+
+    return dwarf_dbg_address(dbg, ret_offset, error);
+}
