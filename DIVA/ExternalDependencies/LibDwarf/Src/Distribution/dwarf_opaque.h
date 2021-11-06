@@ -581,8 +581,8 @@ struct Dwarf_Debug_s {
     struct Dwarf_Section_s de_debug_abbrev;
     struct Dwarf_Section_s de_debug_line;
     struct Dwarf_Section_s de_debug_line_str; /* New in DWARF5 */
-    struct Dwarf_Section_s de_debug_loc;
-    struct Dwarf_Section_s de_debug_aranges;
+    struct Dwarf_Section_s de_debug_loc;        // <--- location
+    struct Dwarf_Section_s de_debug_aranges;    // <--- address
     struct Dwarf_Section_s de_debug_macinfo;
     struct Dwarf_Section_s de_debug_macro; /* New in DWARF5 */
     struct Dwarf_Section_s de_debug_names; /* New in DWARF5 */
