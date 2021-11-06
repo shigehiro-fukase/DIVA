@@ -314,6 +314,11 @@ std::string Object::getCommonYAML() const {
     YAML << getLineNumber() << '\n';
   else
     YAML << "null\n";
+  YAML << "  column: ";
+  if (getColumnNumber() != 0)
+      YAML << getColumnNumber() << '\n';
+  else
+      YAML << "null\n";
 
   std::string FileName(getFileName(getFilePath()));
   YAML << "  file: ";

@@ -278,6 +278,10 @@ void ScopeTextPrinter::printObjectText(const Object *Obj,
   std::string LineNoStr =
       (LineNo == 0 && !Settings.ShowZeroLine) ? " " : std::to_string(LineNo);
 
+  auto ColumnNo = Obj->getColumnNumber();
+  std::string ColumnNoStr =
+      (LineNo == 0 && !Settings.ShowZeroLine) ? "" : (ColumnNo == 0) ? "-" : std::to_string(ColumnNo);
+
   // Create indentation.
   auto TreeIndentAmount = IndentSize * (Settings.ShowIndent ? IndentLevel : 1);
   std::string FirstLineIndent(TreeIndentAmount, ' ');
@@ -290,6 +294,7 @@ void ScopeTextPrinter::printObjectText(const Object *Obj,
   std::string TextOutputLine;
   std::getline(ObjText, TextOutputLine);
   OutputStream << std::setw(static_cast<int>(LineNumberIndentSize)) << LineNoStr
+               << ((ColumnNoStr.length() > 0) ? ":" : "") << ColumnNoStr
                << FirstLineIndent << TextOutputLine << '\n';
 
   // Print the other lines of the text with more indent.

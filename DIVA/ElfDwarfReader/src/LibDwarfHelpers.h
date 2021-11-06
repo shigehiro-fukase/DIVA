@@ -286,6 +286,7 @@ private:
 
 struct DwarfLineEntry {
   Dwarf_Unsigned LineNo;
+  Dwarf_Unsigned ColumnNo;
   Dwarf_Unsigned SrcFileID;
   Dwarf_Addr LineAddr;
 

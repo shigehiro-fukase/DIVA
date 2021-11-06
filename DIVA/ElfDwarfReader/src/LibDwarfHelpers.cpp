@@ -657,6 +657,7 @@ DwarfLineEntry DwarfLineTable::getLine(size_t LineIndex) const {
 
   DwarfLineEntry Result;
   dwarf_lineno(Line, &Result.LineNo, nullptr);
+  dwarf_lineoff_b(Line, &Result.ColumnNo, nullptr);
   dwarf_line_srcfileno(Line, &Result.SrcFileID, nullptr);
   dwarf_lineaddr(Line, &Result.LineAddr, nullptr);
 
