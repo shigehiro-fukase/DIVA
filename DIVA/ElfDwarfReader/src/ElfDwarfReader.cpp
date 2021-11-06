@@ -390,6 +390,10 @@ void DwarfReader::initObjectFromAttrs(LibScopeView::Object &Obj,
       getAttrExpectingKind(Die, DW_AT_decl_line, DwarfAttrValueKind::Unsigned));
   Obj.setLineNumber(LineNo.empty() ? 0 : LineNo.getUnsigned());
 
+  DwarfAttrValue ColumnNo(
+      getAttrExpectingKind(Die, DW_AT_decl_column, DwarfAttrValueKind::Unsigned));
+  Obj.setColumnNumber(ColumnNo.empty() ? 0 : ColumnNo.getUnsigned());
+  
   DwarfAttrValue DeclFileID(
       getAttrExpectingKind(Die, DW_AT_decl_file, DwarfAttrValueKind::Unsigned));
   if (!DeclFileID.empty())
@@ -546,6 +550,7 @@ void DwarfReader::createLines(const DwarfDie &CUDie,
 
     CUObj.addChild(Ln);
     Ln->setLineNumber(DwarfLine.LineNo);
+    Ln->setColumnNumber(DwarfLine.ColumnNo);
     Ln->setAddress(DwarfLine.LineAddr);
     Ln->setDieOffset(static_cast<Dwarf_Off>(DwarfLine.LineAddr));
 

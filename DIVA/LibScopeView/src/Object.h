@@ -166,6 +166,7 @@ public:
 private:
   // Line associated with this object.
   uint64_t LineNumber;
+  uint64_t ColumnNumber;
 
   // The parent of this object (nullptr if the root scope).
   Scope *Parent;
@@ -206,6 +207,8 @@ public:
   /// \brief The line for the object.
   uint64_t getLineNumber() const { return LineNumber; }
   void setLineNumber(uint64_t LnNumber) { LineNumber = LnNumber; }
+  uint64_t getColumnNumber() const { return ColumnNumber; }
+  void setColumnNumber(uint64_t CnNumber) { ColumnNumber = CnNumber; }
 
   /// \brief The parent scope for this object.
   Scope *getParent() const { return Parent; }
