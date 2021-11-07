@@ -1885,6 +1885,13 @@ dwarf_die_address(Dwarf_Die die,
     dbg = die->di_cu_context->cc_dbg;
     dataptr = die->di_is_info? dbg->de_debug_info.dss_data:
         dbg->de_debug_types.dss_data;
+
+    {
+        char *name;
+        if (DW_DLV_OK == dwarf_diename(die, &name, NULL)) {
+            printf("NAME = %s\n", name);
+        }
+    }
     printf("DATAPTR = %p\n", dataptr);
 
     return dwarf_dbg_address(dbg, ret_offset, error);
