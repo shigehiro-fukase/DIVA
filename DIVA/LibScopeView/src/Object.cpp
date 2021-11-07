@@ -272,6 +272,9 @@ std::string Object::formatAttributeText(const std::string &AttributeText) {
   return "    - " + AttributeText;
 }
 
+static std::string stringName(const std::string &name) {
+    return (name.empty()) ? std::string("null") : ("\"" + name + "\"");
+}
 std::string Object::getCommonYAML() const {
   std::stringstream YAML;
 
@@ -286,11 +289,9 @@ std::string Object::getCommonYAML() const {
   else
     Name += getName();
 
-  YAML << "name: ";
-  if (!Name.empty())
-    YAML << "\"" << Name << "\"\n";
-  else
-    YAML << "null\n";
+  YAML << "name: " << stringName(Name) << "\n";
+  YAML << "local_name: " << stringName(getName()) << "\n";
+  YAML << "qualified_name: " << stringName(getQualifiedName()) << "\n";
 
   // Type.
   YAML << "type: ";
