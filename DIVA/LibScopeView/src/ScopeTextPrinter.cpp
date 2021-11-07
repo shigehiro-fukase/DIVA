@@ -142,7 +142,7 @@ std::string getDWARFAttributesString(const Object *Obj, size_t Level,
   }
   // LEVEL
   if (Settings.ShowLevel)
-    AttrString << std::setw(static_cast<int>(LevelNumberIndentSize)) << std::dec
+    AttrString << "Lv:" << std::setw(static_cast<int>(LevelNumberIndentSize)) << std::dec
                << Level << ' ';
   AttrString << std::setfill(' ');
   // [TAG]
@@ -295,6 +295,9 @@ void ScopeTextPrinter::printObjectText(const Object *Obj,
   std::getline(ObjText, TextOutputLine);
   OutputStream << std::setw(static_cast<int>(LineNumberIndentSize)) << LineNoStr
                << ((ColumnNoStr.length() > 0) ? ":" : "") << ColumnNoStr
+#if 0
+               << " DieOffset=" << std::to_string(Obj->getDieOffset())
+#endif
                << FirstLineIndent << TextOutputLine << '\n';
 
   // Print the other lines of the text with more indent.
