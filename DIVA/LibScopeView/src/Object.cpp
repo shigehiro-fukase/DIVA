@@ -330,7 +330,16 @@ std::string Object::getCommonYAML() const {
     YAML << "null\n";
 
   // Dwarf.
-  YAML << "dwarf:\n  offset: 0x" << std::hex << getDieOffset() << "\n  tag: ";
+  std::stringstream ParentOffsetString;
+  if (getParent()) {
+      ParentOffsetString << "0x" << std::hex << getParent()->getDieOffset();
+  } else {
+      ParentOffsetString << "null";
+  }
+  YAML << "dwarf:\n"
+      << "  offset: 0x" << std::hex << getDieOffset() << "\n"
+      << "  parentoffset: " << ParentOffsetString.str() << "\n"
+      << "  tag: ";
   if (getDieTag() != 0) {
     const char *TagName;
     dwarf_get_TAG_name(getDieTag(), &TagName);
