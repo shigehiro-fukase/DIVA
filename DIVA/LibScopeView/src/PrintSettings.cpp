@@ -71,6 +71,22 @@ void PrintSettings::setMoreShowOptions(bool SetTo) {
   ShowUnion = SetTo;
   ShowUsing = SetTo;
   ShowVariable = SetTo;
+
+  ShowCodeline = SetTo;
+  ShowCodelineAttributes = SetTo;
+  ShowCombined = SetTo;
+  ShowDWARFOffset = SetTo;
+  ShowDWARFParent = SetTo;
+  ShowDWARFTag = SetTo;
+  ShowGenerated = SetTo;
+  ShowIsGlobal = SetTo;
+  ShowIndent = SetTo;
+  ShowLevel = SetTo;
+  // ShowOnlyGlobals = false;
+  // ShowOnlyLocals = false;
+  ShowQualified = SetTo;
+  ShowVoid = SetTo;
+  // ShowZeroLine = SetTo;
 }
 
 bool PrintSettings::printObject(const Object &Obj) const {
